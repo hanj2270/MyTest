@@ -1,6 +1,0 @@
-[submodule "DiggestTest"]
-	path = DiggestTest
-	url = git@git.koal.com:hanjian/DiggestTest.git
-[submodule "GitTraining"]
-	path = GitTraining
-	url = git@git.koal.com:hanjian/hanjian-git-training.git
