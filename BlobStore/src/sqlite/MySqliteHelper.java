@@ -1,76 +1,104 @@
 package sqlite;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ArrayHandler;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
-import org.sqlite.SQLiteDataSource;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
 public class MySqliteHelper  {
 	
-	private static SQLiteDataSource dataSource;  
-	private static QueryRunner runner;
+	private static String path=null;
 	private final static String TABLENAME="BlobDatabase";
 	
-	MySqliteHelper(String path) throws SQLException{
-		dataSource=new SQLiteDataSource();
-		dataSource.setUrl("jdbc:sqlite:"+path);
-		runner=new QueryRunner(dataSource);
-		dataSource.getConnection().createStatement().execute("CREATE TABLE IF NOT EXISTS "+TABLENAME+
-				"(alias varchar(50) primary key,password varchar(50)," +  
-                "Blob varchar(2000),EncryptedBlob varchar(2000))");
+
+	@SuppressWarnings("static-access")
+	MySqliteHelper(String path) throws Exception{
+		Class.forName("org.sqlite.JDBC");
+		this.path=path;
+		String sql="create table if not exists "+TABLENAME+"(alias varchar(50) primary key,password varchar(50)," +
+				"Blob varchar(2000),EncryptedBlob varchar(2000))";
+		executeUpdate(sql);
 	}
 	
+	private static void executeUpdate(String sql) throws SQLException{
+		Connection conn =DriverManager.getConnection("jdbc:sqlite:"+path);
+		Statement stat = conn.createStatement();
+		stat.executeUpdate(sql);
+		conn.close();
+	}
+	
+	
+	
 	public int insert(String alias,String password,String Blob,String EncryptedBlob ) throws SQLException, UnsupportedEncodingException{  
-		String sql="INSERT INTO "+TABLENAME+"(alias,password,Blob,EncryptedBlob) VALUES (?,?,?,?)"; 
-		Object params[] = {alias,password,Blob,EncryptedBlob}; 
-        int n = runner.update(sql,params); 
-        System.out.println("成功插入" + n + "条数据！");   
-        return n;
+		String sql="INSERT INTO "+TABLENAME+"(alias,password,Blob,EncryptedBlob) VALUES ('"+alias+"','"+password+"','"+
+				Blob+"','"+EncryptedBlob+"')"; 
+		executeUpdate(sql);
+		return 1;
     } 
 	
 	public int update(String column,String alias,String value) throws SQLException{  
-		String sql=" UPDATE "+TABLENAME+" SET "+column+"=? WHERE alias=? ";
-        int n = runner.update(sql,value,alias);   
-        System.out.println("成功更新" + n + "条数据！");
-        return n;
+		String sql=" UPDATE "+TABLENAME+" SET "+column+"='"+value+"' WHERE alias='"+alias+"'";
+		executeUpdate(sql);
+        return 1;
     } 
-	
-	public Object[] queryall() throws SQLException{
+
+	public String[] queryall() throws SQLException{
+		Connection conn =DriverManager.getConnection("jdbc:sqlite:"+path);
+		Statement stat = conn.createStatement();
+		List<String> list=new ArrayList<String>();  
 		String sql="SELECT alias FROM "+TABLENAME;  
-        Object[] b=runner.query(sql, new ArrayHandler());  
-        return b;  
+        ResultSet rs = stat.executeQuery(sql);
+        while(rs.next())  
+        {  
+          list.add(rs.getString("alias")); 
+        }
+        rs.close();
+        conn.close();
+        String[] strings=new String[list.size()];
+        return list.toArray(strings);
+        
 	}
 	
+
 	public String query(String target,String column,String value) throws SQLException{
-		String sql="SELECT ? FROM "+TABLENAME+" WHERE "+column+"=?";
-		Object params[] = {target,value};
-		@SuppressWarnings("deprecation")
-		Object result=runner.query(sql,params,new ScalarHandler());
-		return (String)result;
+		Connection conn =DriverManager.getConnection("jdbc:sqlite:"+path);
+		Statement stat = conn.createStatement();
+		String sql="SELECT "+target+" FROM "+TABLENAME+" WHERE "+column+"='"+value+"'";
+		ResultSet rs =stat.executeQuery(sql);
+		String result=rs.getString(target);
+		rs.close();
+        conn.close();
+		return result;
 	}
 	
 	public void delete(String alias) throws SQLException{
-		String sql="DELETE * FROM "+TABLENAME+" WHERE alias=?";
-		runner.update(sql,alias);
+		String sql="DELETE FROM "+TABLENAME+" WHERE alias='"+alias+"'";
+		executeUpdate(sql);
 	}
 	public void drop() throws SQLException{
-		String sql="DROP TABLE"+TABLENAME;
-		runner.update(sql);
+		String sql="drop table if exists "+TABLENAME;
+		executeUpdate(sql);
 	}
 	
 	public int count() throws SQLException{
-		String sql="select count(*) from "+TABLENAME;
-		return runner.update(sql);
+		Connection conn =DriverManager.getConnection("jdbc:sqlite:"+path);
+		Statement stat = conn.createStatement();
+		String sql="select count(*) as numb from "+TABLENAME;
+		ResultSet rs =stat.executeQuery(sql);
+		int numb=rs.getInt("numb");
+		rs.close();
+        conn.close();
+		return numb;
 	}
 	
-	void Close(){
-		dataSource=null;  
-        runner=null;  
+	void Close() throws SQLException{
+		
 	}
 
 }

@@ -17,6 +17,7 @@ public class SqliteBlobStore implements IBlobStore {
 	SqliteBlobStore(String storePath){
 		this.storePath=storePath;
 	}
+	
 	public String getType() {
 		return "sqlite";
 	}
@@ -24,16 +25,23 @@ public class SqliteBlobStore implements IBlobStore {
 	public int load() {
 		try {
 			mySqliteHelper=new MySqliteHelper(storePath);
-		} catch (SQLException e) {
+			return 1;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
-		return 1;
+		
 	}
 
 	public int save() {
-		mySqliteHelper.Close();
-		return 0;
+		try {
+			mySqliteHelper.Close();
+			return 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	public int copyTo(IBlobStore other) {
@@ -53,7 +61,7 @@ public class SqliteBlobStore implements IBlobStore {
 
 	public String[] listAliases() {
 		try {
-			return (String[]) mySqliteHelper.queryall();
+			return mySqliteHelper.queryall();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
