@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BlobXML>
+    <record>
+        <alias>test2</alias>
+        <password>key2</password>
+        <Blob>Blob2</Blob>
+        <EncryptedBlob>encrptedBlob2</EncryptedBlob>
+    </record>
+    <record>
+        <alias>test1</alias>
+        <password>key1</password>
+        <Blob>Blob1</Blob>
+        <EncryptedBlob>encrptedBlob1</EncryptedBlob>
+    </record>
+</BlobXML>

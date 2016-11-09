@@ -15,8 +15,8 @@ public class DesTest {
 		
 		System.out.println("DES加密测试");
 		
-		DesByJdk.jdkDes(data, key,KEY_ALGORITHM1,CIPHER_ALGORITHM1);
-		DesByBC.BCDes(data, key,KEY_ALGORITHM1,CIPHER_ALGORITHM1);
+		DesByBC.jdkDes(data, key,KEY_ALGORITHM1,CIPHER_ALGORITHM1);
+		DesByJdk.BCDes(data, key,KEY_ALGORITHM1,CIPHER_ALGORITHM1);
 		
 		
 		//Aes加密配置
@@ -25,8 +25,8 @@ public class DesTest {
 		
 		System.out.println("AES加密测试");
 		
-		DesByJdk.jdkDes(data, key,KEY_ALGORITHM2,CIPHER_ALGORITHM2);
-		DesByBC.BCDes(data, key,KEY_ALGORITHM1,CIPHER_ALGORITHM2);
+		DesByBC.jdkDes(data, key,KEY_ALGORITHM2,CIPHER_ALGORITHM2);
+		DesByJdk.BCDes(data, key,KEY_ALGORITHM1,CIPHER_ALGORITHM2);
 	}
 
 }

@@ -1,256 +1,96 @@
 package sqlite;
 
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Map;
 
-import blobStore.IBlobStore;
+import main.BaseStore;
+import main.BlobBean;
 
-public class SqliteBlobStore implements IBlobStore {
 
-	private String storePath;
-	private MySqliteHelper mySqliteHelper;
-	private final static String alias="alias";
-	private final static String password="password";
-	private final static String Blob="Blob";
-	private final static String EncryptedBlob="EncryptedBlob";
+
+
+/** 
+* @ClassName: SqliteBlobStore 
+* @Description: 利用Sqlite进行持久化存储的BlobStore实体类
+* @author hanjian  
+*/
+public class SqliteBlobStore extends BaseStore {
+
+
+	private SqliteHelper mySqliteHelper;
 	
+	private final static String ALIAS="alias";
+	private final static String PASSWORD="password";
+	private final static String BLOB="Blob";
+	private final static String ENCRYPTEDBLOB="EncryptedBlob";
 	
-	SqliteBlobStore(String storePath){
-		this.storePath=storePath;
+	//传入文件路径进行构造
+	public SqliteBlobStore(String storePath){
+		try {
+			mySqliteHelper=new SqliteHelper(storePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
+	//返回BlobStore类型
 	public String getType() {
 		return "sqlite";
 	}
-
+	
+	//从数据库读取数据
 	public int load() {
 		try {
-			mySqliteHelper=new MySqliteHelper(storePath);
-			return 1;
-		} catch (Exception e) {
+			if(mySqliteHelper.count()!=0){//判断是否存在记录
+				String[] aliasesList=mySqliteHelper.queryall();//获取全部记录
+				for(String key:aliasesList){
+					String alias=key;                               //如果存在,依次生成Bean并存入myblobMap
+					String password=mySqliteHelper.query(PASSWORD, ALIAS, key);
+					String blob=mySqliteHelper.query(BLOB, ALIAS, key);
+					String encrptedBlob=mySqliteHelper.query(ENCRYPTEDBLOB, ALIAS, key);
+					BlobBean blobBean=new BlobBean(alias, password, blob, encrptedBlob);
+					MyBlobMap.put(key, blobBean);
+				}
+				return 1;
+			}else{
+				return 0;
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
 		}
 		
 	}
-
+	
+	
+	//向数据库存入数据
 	public int save() {
 		try {
-			mySqliteHelper.Close();
-			return 1;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public int copyTo(IBlobStore other) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int size() {
-		try {
-			return mySqliteHelper.count();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-		}
-		
-	}
-
-	public String[] listAliases() {
-		try {
-			return mySqliteHelper.queryall();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
-
-	public boolean containsAlias(String alias) {
-		try {
-			if(mySqliteHelper.query("*", SqliteBlobStore.alias, alias)!=null){
-				return true;
-			}else{
-				return false;
+			for(Map.Entry<String, BlobBean> e:MyBlobMap.entrySet()){
+				String alias=e.getKey();
+				if(aliasInSqlite(alias)){                                   //如果记录存在进行更新
+					mySqliteHelper.update(PASSWORD, alias, e.getValue().getPassword());
+					mySqliteHelper.update(BLOB, alias, e.getValue().getBlob());
+					mySqliteHelper.update(ENCRYPTEDBLOB, alias, e.getValue().getEncrptedBlob());
+				}else{
+					mySqliteHelper.insert(alias, e.getValue().getPassword(), //如果不存在进行插入
+							e.getValue().getBlob(), e.getValue().getEncrptedBlob());
+				}
 			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			return MyBlobMap.size();
+		} catch (Exception e) {
 			e.printStackTrace();
+			return 0;
+		}
+	}
+	//检查数据库内是否有该条记录
+	private boolean aliasInSqlite(String alias) throws SQLException{
+		if( Arrays.asList(mySqliteHelper.queryall()).contains(alias)){
+			return true;
+		}else{
 			return false;
 		}
-	}
-
-	public boolean isEncrypted(String alias) {
-		try {
-			if(mySqliteHelper.query(EncryptedBlob, SqliteBlobStore.alias, alias)!=null){
-				return true;
-			}else{
-				return false;
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public String findAlias(byte[] value) {
-		try {
-			String stringValue=new String(value);	
-			return mySqliteHelper.query(alias, Blob, stringValue);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public int setBlob(String alias, String value) {
-		try {
-			int i=0;
-			if (containsAlias(alias)){
-				i=mySqliteHelper.update(Blob, alias, value);
-			}else{
-				i=mySqliteHelper.insert(alias, null, value, null);
-			}
-			return i;
-		} catch (Exception e) {
-			return 0;
-		}
-		
-		
-	}
-
-	public int setBlob(String alias, byte[] value) {
-		try {
-			int i=0;
-			String stringValue=new String(value);
-			if (containsAlias(alias)){	
-				i=mySqliteHelper.update(Blob, alias, stringValue);
-			}else{
-				i=mySqliteHelper.insert(alias, null, stringValue, null);
-			}
-			return i;
-		} catch (Exception e) {
-			return 0;
-		}
-	}
-
-	public byte[] getBlob(String alias) {
-		try {
-			String blob=mySqliteHelper.query(Blob, SqliteBlobStore.alias, alias);
-			return blob.getBytes();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
-
-	public String getBlobAsString(String alias) {
-		try {
-			return mySqliteHelper.query(Blob, SqliteBlobStore.alias, alias);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-/*
- * (non-Javadoc)需要补充加密逻辑
- * @see blobStore.IBlobStore#setEncryptedBlob(java.lang.String, java.lang.String, java.lang.String)
- */
-	public int setEncryptedBlob(String alias, String entryPassword, String value) {
-		
-		try {
-			if(containsAlias(alias)){
-				mySqliteHelper.update(alias,EncryptedBlob, value);
-				mySqliteHelper.update(alias, password, entryPassword);
-				return 1;
-			}else{
-				mySqliteHelper.insert(alias, entryPassword, value, value);
-				return 1;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-			
-		
-	}
-
-	public int setEncryptedBlob(String alias, String entryPassword, byte[] value) {
-		String stringValueString=new String(value);
-		try {
-			if(containsAlias(alias)){
-				mySqliteHelper.update(alias,EncryptedBlob, stringValueString);
-				mySqliteHelper.update(alias, password, entryPassword);
-				return 1;
-			}else{
-				mySqliteHelper.insert(alias, entryPassword, stringValueString, stringValueString);
-				return 1;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public byte[] getEncryptedBlob(String alias, String entryPassword) {
-		try {
-			if(containsAlias(alias)&&
-					mySqliteHelper.query(EncryptedBlob, SqliteBlobStore.alias, alias)!=null){
-				String encrptedBlob= mySqliteHelper.query(EncryptedBlob, SqliteBlobStore.alias, alias);
-				return encrptedBlob.getBytes();
-			}else{
-				return null;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public String getEncryptedBlobAsString(String alias, String entryPassword) {
-		try {
-			if(containsAlias(alias)&&
-					mySqliteHelper.query(EncryptedBlob, SqliteBlobStore.alias, alias)!=null){
-				String encrptedBlob= mySqliteHelper.query(EncryptedBlob, SqliteBlobStore.alias, alias);
-				return encrptedBlob;
-			}else{
-				return null;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public int deleteBlob(String alias) {
-		try {
-			mySqliteHelper.delete(alias);
-			return 1;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
-	public int clearAll() {
-		try {
-			mySqliteHelper.drop();
-			return 1;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return 0;
-		}
-		
 	}
 
 }
