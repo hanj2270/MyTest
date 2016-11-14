@@ -1,54 +1,72 @@
 package encrption;
 
-import java.io.ByteArrayOutputStream;
-import java.security.Key;
+import java.security.KeyException;
+import java.security.MessageDigest;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import javax.crypto.Cipher;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.apache.commons.codec.binary.Base64;
 
 public class EncrptionUtils {
-	public static byte[] encrypt(Key key, byte[] data) throws Exception {
-		Cipher cipher = Cipher.getInstance("RSA",new BouncyCastleProvider());
-		cipher.init(Cipher.ENCRYPT_MODE, key);
-		int blockSize = cipher.getBlockSize();
-		int outputSize = cipher.getOutputSize(data.length);// 获得加密块加密后块大小
-		int leavedSize = data.length % blockSize;
-		int blocksSize = leavedSize != 0 ? data.length / blockSize + 1
-				: data.length / blockSize;
-		byte[] raw = new byte[outputSize * blocksSize];
-		int i = 0;
-		while (data.length - i * blockSize > 0) {
-			if (data.length - i * blockSize > blockSize)
-				cipher.doFinal(data, i * blockSize, blockSize, raw, i
-						* outputSize);
-			else
-				cipher.doFinal(data, i * blockSize,
-						data.length - i * blockSize, raw, i * outputSize);
-			// 这里面doUpdate方法不可用，查看源代码后发现每次doUpdate后并没有什么实际动作除了把
-			// byte[]放到ByteArrayOutputStream中，而最后doFinal的时候才将所有的byte[]进行加密，可是到
-			// 了此时加密块大小很可能已经超出了OutputSize所以只好用dofinal方法。
-			i++;
+	private static final String DIGEST_ALGORITHM="MD5";
+	private static final String CIPHER_ALGORITHM="RSA/ECB/PKCS1Padding";
+	
+	
+	/** 
+	* @Description: 利用私钥进行签名
+	* @param prikey 私钥
+	* @param data 需要签名的原文
+	* @return
+	* @throws Exception    设定文件 
+	*/
+	public static String sign(PrivateKey prikey,String data) {
+		try {
+			MessageDigest digest=MessageDigest.getInstance(DIGEST_ALGORITHM); //获取原文摘要
+			byte[] digestbytes=digest.digest(data.getBytes("UTF-8"));
+			Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+			cipher.init(Cipher.ENCRYPT_MODE, prikey);
+			byte[] signBytes=cipher.doFinal(digestbytes);
+			return Base64.encodeBase64String(signBytes);
+		}catch(KeyException e){
+			System.out.println("密钥错误,请检查已选择的证书");
+			e.printStackTrace();
 		}
-		return raw;
+		catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return null;
 	}
-	
-	
-	
-	public static byte[] decrypt(Key key, byte[] data) throws Exception {
-		Cipher cipher = Cipher.getInstance("RSA",
-				new org.bouncycastle.jce.provider.BouncyCastleProvider());
-		cipher.init(Cipher.DECRYPT_MODE, key);
-		int blockSize = cipher.getBlockSize();
-		ByteArrayOutputStream bout = new ByteArrayOutputStream(64);
-		int j = 0;
-		while (data.length - j * blockSize > 0) {
-			bout.write(cipher.doFinal(data, j * blockSize, blockSize));
-			j++;
-		}
-		return bout.toByteArray();
-	}
-}
 
+
+	/** 
+	* @Description: 利用公钥进行验签
+	* @param pubkey 公钥
+	* @param data   原文
+	* @param sign   签名
+	* @return
+	* @throws Exception    设定文件 
+	*/
+	public static boolean verify(PublicKey pubkey,String data,String sign) {
+		try {
+			byte [] signbytes=Base64.decodeBase64(sign);
+			Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+			cipher.init(Cipher.DECRYPT_MODE, pubkey);
+			byte[] signDecode=cipher.doFinal(signbytes);
+			String digest1=Base64.encodeBase64String(signDecode); //从签名对原文摘要进行恢复
+			String digest2=Base64.encodeBase64String(MessageDigest.getInstance(DIGEST_ALGORITHM). 
+					digest(data.getBytes("UTF-8")));   //获取原文摘要
+			//比从签名计算出的摘要与原文摘要,相同则为真
+			if(digest1.equals(digest2)){   
+				return true;
+			}else{
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 }
