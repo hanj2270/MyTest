@@ -1,7 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.7
+targetCompatibility =1.7
 version = '1.0'
 jar {
     manifest {
@@ -34,4 +35,23 @@ uploadArchives {
            dirs 'repos'
        }
     }
+}
+
+task taskJar(type:Jar, dependsOn: compileJava) {
+    from 'build/classes'
+    destinationDir = file('build/libs')
+}
+
+//清除上次的编译过的文件
+task clearPj(type:Delete){
+   delete 'build','target'
+}
+
+
+//把JAR复制到目标目录
+task release(type: Copy,dependsOn: [clearPj,taskJar]) {
+    from('build/libs') {
+        include '*.jar'
+    }
+    into ('target')
 }

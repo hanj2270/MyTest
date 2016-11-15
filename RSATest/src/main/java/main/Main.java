@@ -24,6 +24,7 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.println("欢迎使用RSA签名/验签程序");
 		hint();                                          //命令提示列表
+		initialize();
 		Scanner in=new Scanner(System.in);
 		String readline;
 		while((readline=in.nextLine())!=null){
@@ -74,6 +75,13 @@ public class Main {
 		System.out.println("-i:  指定输入文件");
 		System.out.println("-o:  指定输出文件");
 		System.out.println("-q:  退出");
+
+	}
+		
+	/** 
+	* @Description: 初始化内存
+	*/
+	private static void initialize(){
 		data.put("inputPath", null);   //输入文件路径
 		data.put("outputPath", null);  //输出文件路径
 		data.put("certPath", null);    //选定证书的路径
@@ -82,7 +90,6 @@ public class Main {
 		data.put("text", null);        //原文
 		data.put("signString", null);  //签名字符串
 	}
-		
 	/** 
 	* @Description: 签名函数
 	*/
