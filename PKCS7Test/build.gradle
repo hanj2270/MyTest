@@ -12,10 +12,15 @@ jar {
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://192.168.109.63:8081/nexus/content/groups/public/"
+    }
 }
 
 dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	// https://mvnrepository.com/artifact/javax.mail/mail
+	compile group: 'javax.mail', name: 'mail', version: '1.4.7'
 
 	// https://mvnrepository.com/artifact/org.bouncycastle/bcmail-jdk16
 	compile group: 'org.bouncycastle', name: 'bcmail-jdk16', version: '1.46'
@@ -25,6 +30,8 @@ dependencies {
 	
 	    
 	compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
+	
+	compile group: 'koal.security',name: 'koal_security', version: '1.5.18'
 	
 	compile files('lib/RSATest-1.0.jar')
     
