@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AIDLTestClient</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <string name="bind_bt">绑定远端服务</string>
+    <string name="getRemoteService_bt">调用远端服务方法</string>
+    <string name="unbind_bt">解除远端服务绑定</string>
+    
+    
+
+</resources>

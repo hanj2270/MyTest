@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AIDLTest</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <string name="remote_string">这是一条来自远端服务的信息:</string>
+
+</resources>

@@ -13,7 +13,7 @@
     
     <Button
         android:id="@+id/get_hello"
-        android:text="get_hello_from_JNI"
+        android:text="@string/button1_string"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"

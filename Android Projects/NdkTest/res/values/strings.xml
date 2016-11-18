@@ -2,6 +2,6 @@
 <resources>
 
     <string name="app_name">NdkTest</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="hello_world">Waiting for message from JNI!</string>
+	<string name="button1_string">Get message from JNI!</string>
 </resources>
