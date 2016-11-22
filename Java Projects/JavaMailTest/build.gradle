@@ -1,0 +1,48 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.5
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    
+	// https://mvnrepository.com/artifact/javax.mail/mail
+	compile group: 'javax.mail', name: 'mail', version: '1.4.7'
+
+	// https://mvnrepository.com/artifact/org.bouncycastle/bcmail-jdk16
+	compile group: 'org.bouncycastle', name: 'bcmail-jdk16', version: '1.46'
+	
+	// https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk16
+	compile group: 'org.bouncycastle', name: 'bcprov-jdk16', version: '1.46'
+	
+	    
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
+	
+	compile files('lib/RSATest-1.0.jar')
+    
+    
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}

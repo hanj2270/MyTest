@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">KeyChainTest</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <string name="key_alias">请输入别名</string>
+    <string name="subject">主体信息</string>
+    <string name="cert">您的证书生成后将在这里展示</string>
+    
+    <string name="C">国家</string>
+    <string name="L">地区</string>
+    <string name="O">组织</string>
+    <string name="CN">姓名</string>
+    
+    <string name="generate">生成证书</string>
+    <string name="show">展示证书</string>
+    <string name="save">安装证书</string>
+
+
+</resources>

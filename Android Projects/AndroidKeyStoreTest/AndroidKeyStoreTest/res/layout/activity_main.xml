@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" 
+    android:orientation="vertical">
+	<LinearLayout 
+	    android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="4">.
+	     <EditText 
+        android:id="@+id/cert"
+         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/cert"/>
+	</LinearLayout>    
+   
+    
+    <LinearLayout 
+	    android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="6"
+    	android:orientation="vertical">.
+    
+	    <EditText
+	        android:id="@+id/aliasText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/key_alias"/>
+	    
+	    <TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:textSize="20sp"
+	        android:textColor="#000"
+	        android:layout_marginTop="15dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginBottom="10dp"
+	        android:hint="@string/subject"/>
+	    
+	    <EditText
+	        android:id="@+id/CText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/C"/>
+	    
+	    <EditText
+	        android:id="@+id/LText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/L"/>
+	    
+	    <EditText
+	        android:id="@+id/OText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/O"/>
+	    
+	    <EditText
+	        android:id="@+id/CNText"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/CN"/>
+	    
+	    <LinearLayout  
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_gravity="center_horizontal">
+	    
+	        <Button
+	            android:id="@+id/generate"
+	            android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	            android:text="@string/generate"/>
+	        
+	        <Button
+	            android:id="@+id/show"
+	            android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	            android:text="@string/show"/>
+	        
+	        <Button
+	            android:id="@+id/save"
+	            android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+	            android:text="@string/save"/>
+	        
+	    </LinearLayout>
+	</LinearLayout> 
+
+
+</LinearLayout>
