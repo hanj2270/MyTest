@@ -1,0 +1,503 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html>
+<head>
+    <title>安全电子邮件</title>
+    
+
+<link rel="stylesheet" href="css/core/common.css" type="text/css" />
+<link rel="stylesheet" href="css/core/userCommon.css" type="text/css" />
+<link id="clientCss" href="css/userTheme/s2_yfch.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javaScript" src="javascript/jquery.min.js?3.1.7"></script>       
+<script type="text/javascript" src="javascript/jquery.tooltip.js?3.1.7"></script>
+<script type="text/javascript" src="javascript/KMailX.js?3.1.7"></script>
+<script type="text/javascript" src="javascript/KMailxWrap.js?3.1.7"></script>
+<script type="text/javascript" src="javascript/common.js?3.1.7"></script>
+<script type="text/javascript" src="javascript/alert.js?3.1.7"></script>
+<script type="text/javascript" src="javascript/mdialog.js?3.1.7"></script> 
+<script type="text/javascript" src="javascript/kSelect.js?3.1.7"></script>
+<script type="text/javascript" src="javascript/user.js?3.1.7"></script>
+
+
+
+
+    <link rel="stylesheet" type="text/css" href="css/myGrid.css"></link>
+	<script type="text/javascript" src="javascript/mailDataTable.js"></script>
+	<script type="text/javascript" src="javascript/myGrid.js"></script>
+	<script type="text/javascript">
+	//停止标题的闪动
+		$(function(){
+			top.window.updateMenu(false);
+			try{
+				top.window.stopFlicker();
+			}catch(e){
+			}
+		});
+	</script>
+	<style type="text/css">
+	/****************************************************************8*****************/
+	.table-body  .datagrid-td-subject {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.table-body .datagrid-td-subject .datagrid-cell-subject {
+		width: 100%;
+		table-layout: fixed;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: left;
+		padding-left:5px;
+		font-family: helvetica, verdana, san-serif;
+		font-size: 14px;
+	}
+	.table-body .datagrid-td-subject .datagrid-cell-subject div{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.datagrid-td-securityLevelNameHtml {
+		width: 85px;
+	}
+	.table-body  td.datagrid-cell-securityLevelNameHtml {
+		width: 85px;
+		min-width: 85px;
+	}
+	.datagrid-td-readStatus {
+		width: 18px;
+	}
+	.table-body  td.datagrid-cell-readStatus {
+		width: 18px;
+		min-width: 18px;
+	}
+	/*修正附件和阅读状态图标  */
+	.datagrid-cell-readStatus span , .datagrid-cell-existAttachment span
+	{
+		margin-top: 3px;
+		margin-left:2px;
+		display:inline-block; 
+	/* 	height: 23px;
+		line-height: 23px; */
+	} 
+	th.datagrid-td-readStatus , th.datagrid-td-existAttachment 
+	{
+	border-left-width: 0px;
+	border-left-style:none;
+	border-right-style:none;
+	}
+	
+	.datagrid-td-existAttachment {
+		width: 18px;
+	}
+	.table-body  td.datagrid-cell-existAttachment {
+		width: 18px;
+		min-width: 18px;
+	}
+	
+	.datagrid-td-selfInTo {
+		width: 10px;
+	}
+	.table-body  td.datagrid-cell-selfInTo {
+		width: 10px;
+		min-width: 10px;
+	}
+	/******************************************************************8**********/
+	.datagrid-td-fromText {
+		width: 200px;
+	}
+	.table-body  td.datagrid-cell-fromText {
+		width: 200px;
+		min-width: 200px;
+	}
+	.table-body .datagrid-td-fromText .datagrid-cell-fromText div{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	.datagrid-td-to {
+		width: 200px;
+	}
+	.table-body  td.datagrid-cell-to {
+		width: 200px;
+		min-width: 200px;
+	}
+	.table-body .datagrid-td-to .datagrid-cell-to div{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	.datagrid-td-mailFolderName {
+		min-width: 120px;
+		width: 120px;
+	}
+	.table-body  td.datagrid-cell-mailFolderName {
+		width: 120px;
+		min-width: 120px;
+	}
+	
+	.datagrid-td-sendDate {
+		min-width: 120px;
+		width: 120px;
+	}
+	.table-body  td.datagrid-cell-sendDate {
+		width: 120px;
+		min-width: 120px;
+	}
+	
+	.datagrid-td-size {
+		width: 50px;
+		min-width: 50px;
+	}
+	.table-body  td.datagrid-cell-size {
+		width: 50px;
+		min-width: 50px;
+	}
+	
+	.datagrid-td-starTarget {
+		min-width: 50px;
+		width: 50px;
+	}
+	.table-body  td.datagrid-cell-starTarget {
+		width: 14px;
+		min-width: 14px;
+	}
+	.mailListIcon
+	{
+	margin: auto;
+	_margin: 0; /*  ie6 */
+	margin-top:8px;
+ 	width: 15px;
+	height: 16px;	 
+	}
+	.mailListSubjectIcon
+	{
+	font-size:1px;
+	margin: auto;
+	_margin: 0; /*  ie6 */
+	
+	padding-top:10px;
+	padding-bottom:5px;
+	
+	padding-right:14px;
+	display: inline;
+	}
+	.unReadMail
+	{
+	 font-weight: bold;
+	 color: #000000;
+	}
+	.unReadableFlag{
+		 ;
+	}
+	</style>
+</head>
+<body>
+<!--头部 -->
+	<div class="bgTitleArea">
+		<div class="titleAreaLeft">
+			收件箱
+			（共 &nbsp;<span id="totalMailCount">26</span>&nbsp;封
+			
+				<span id="unReadMailCountSpan"  style="display:none"  >
+					，其中&nbsp;
+					<a href="javascript:void();return false;" onclick="showUnReadMail();return false;">
+					<font color="blue">未读邮件</font>
+					</a>&nbsp;
+					 <span id="unReadMailCount">0</span>&nbsp;封
+				</span>
+			
+			）
+			
+		</div>
+		<div class="titleAreaRight" >
+			
+
+<span id="optResultInfo" style="font-size:12px;font-weight:bold;align:center;display:none">
+	
+	
+</span>
+<script>
+showOptResultInfo(gId("optResultInfo"));
+</script>
+		</div>
+	</div>
+<!--数据表格区  -->
+  	<form id="mailGridList" name="mailGridList22" action="/userMail.do" method="post" style="margin:0px;">
+  		<!--当前的邮箱id  -->
+  		<input type="hidden" name="currentFolder.folderId" value="10" id="currentFolder.folderId"/>
+  		<input type="hidden" name="mail.mailMailboxId" value="" id="mail.mailMailboxId"/>
+ 		<!--保存查询的条件 -->
+ 		<input type="hidden" name="mailListSearch.position" value="" id="mailListSearch.position"/>
+	 	<input type="hidden" name="mailListSearch.word" value="" id="mailListSearch.word"/>
+	 	<input type="hidden" name="mailListSearch.mailFolderId" value="" id="mailListSearch.mailFolderId"/>
+	 	<input type="hidden" name="mailListSearch.readStatus" value="" id="mailListSearch.readStatus"/>
+	 	<input type="hidden" name="mailListSearch.to" value="" id="mailListSearch.to"/>
+	 	<input type="hidden" name="mailListSearch.from" value="" id="mailListSearch.from"/>
+	 	<input type="hidden" name="mailListSearch.sendTime" value="" id="mailListSearch.sendTime"/>
+	 	<input name="mailListSearch.startTime" id="mailListSearch.startTime" type="hidden"  value="" /> 
+	 	<input name="mailListSearch.endTime" id="mailListSearch.endTime" type="hidden" value="" />
+	 	<input type="hidden" name="mailListSearch.mailStarFlag" value="" id="mailListSearch.mailStarFlag"/>
+	 	
+	 	
+	 	<input type="hidden" id="maxSelectedMailForExport" name="maxSelectedMailForExport" value='50' />
+	 	
+ 		<!--保存查询的条件 End-->
+ 		<!--排序条件 -->
+		<input type="hidden" name="view.order.orderByField.name" value="MAIL_SEND_DATE" id="view.order.orderByField.name"/>
+		<input type="hidden" name="view.order.basc" value="false" id="view.order.basc"/>
+		<!--排序条件 END -->
+ 		<!--保存分页的条件  -->
+		<input type="hidden" name="view.currentPage.page" value="1" id="view.currentPage.page"/>
+		<input type="hidden" name="view.perPageRows" value="18" id="view.perPageRows"/>
+		<input type="hidden" name="view.totalRecord" value="26" id="view.totalRecord"/>
+		<!--分页条件end  -->
+
+		
+
+
+
+<div class="bgBarArea">
+		<div class="barAreaLeft">
+			
+				
+					<input type="button" value='删除'
+						onclick='moveMailToTrashForMailFolder();return false;'
+						class="button-common"
+						onmouseover="this.className='button-common-1'"
+						onmouseout="this.className='button-common'" />
+				
+					<input type="button" value='彻底删除'
+						onclick='deleteMailFromMailFolder();return false;'
+						class="button-common"
+						onmouseover="this.className='button-common-1'"
+						onmouseout="this.className='button-common'" />
+				
+					<input type="button" value='批量导出'
+						onclick='exportMultiMail();return false;'
+						class="button-common"
+						onmouseover="this.className='button-common-1'"
+						onmouseout="this.className='button-common'" />
+				
+			
+			
+				<input type="button" value="全部已读" 	onclick="updateAllMailReadStatusToRead();return false;"
+					class="button-common"
+					onmouseover="this.className='button-common-1'"
+					onmouseout="this.className='button-common'" />
+			
+			&nbsp;
+			
+				<select class="kSelect" data-options="ktitle:'标记为...', optionWidth : 100 , selectType:'event', selectWidth :50">
+					
+						<option value="2" onclick="updateMailReadFlag(kSelectVal);">
+							已读
+						</option>
+					
+						<option value="1" onclick="updateMailReadFlag(kSelectVal);">
+							未读
+						</option>
+					
+				</select>
+				&nbsp;
+				<select class="kSelect" data-options="ktitle:'移到...',selectType:'event', selectWidth :50, optionWidth:100">
+					
+						
+					
+						
+					
+																	
+							<option value="20" onclick="moveMailToFolder(kSelectVal);">
+								已发送
+							</option>
+						
+					
+						
+					
+						
+					
+																	
+							<option value="13" onclick="moveMailToFolder(kSelectVal);">
+								归档邮件
+							</option>
+						
+					
+					
+				</select>
+			
+		</div>
+		<div class="barAreaRight navAreaRight">
+				
+
+
+    &nbsp;共&nbsp;<span  class="gridTotalCount" style="font-weight:bold;">26</span>&nbsp;
+    
+        <A href="javascript:void();return false;" onclick="paging(1);return false;">首页</A>
+        <A href="##" onclick="priorPage();return false">上页</A>
+        <A href="##" onclick="nextPage();return false;">下页</A>
+        <A class="pagingLastPage" href="javascript:void();return false;" onclick='paging(2);return false;'>末页</A>
+        
+        &nbsp;
+        <span title="跳转翻页">
+	        <select class="kSelect pagingPageSelect" selectType="basic" selectWidth="45" optionWidth="71">
+	            
+	                <option selected onclick='paging(1);'>
+	                    1/2
+	                </option>
+	            
+	                <option  onclick='paging(2);'>
+	                    2/2
+	                </option>
+	            
+	        </select>
+        </span>
+
+        &nbsp;
+        <span title="每页条数"><select class="kSelect" selectType="basic" selectWidth="25" optionWidth="51">
+            <option  value="50" onclick='changePerPageRows("50");return false;'>50</option>
+            <option  value="100" onclick='changePerPageRows("100");return false;'>100</option>
+            <option  value="200" onclick='changePerPageRows("200");return false;'>200</option>
+            <option  value="500" onclick='changePerPageRows("500");return false;'>500</option>
+            <option selected value="18" onclick='changePerPageRows(18);'>18</option>
+        </select></span>
+        
+    
+
+	
+		</div>
+</div>
+
+ 
+		<div id="dataGrid"></div>
+		<div id="noContent" style="font-size:16px;width:100%;padding:90px 0px;text-align:center; display: none">没有内容</div>
+		<input type="checkbox" id="checkAll" style="margin-left: 8px; margin-right: 5px;"  />全部
+		
+
+
+
+<div class="bgBarArea">
+		<div class="barAreaLeft">
+			
+				
+					<input type="button" value='删除'
+						onclick='moveMailToTrashForMailFolder();return false;'
+						class="button-common"
+						onmouseover="this.className='button-common-1'"
+						onmouseout="this.className='button-common'" />
+				
+					<input type="button" value='彻底删除'
+						onclick='deleteMailFromMailFolder();return false;'
+						class="button-common"
+						onmouseover="this.className='button-common-1'"
+						onmouseout="this.className='button-common'" />
+				
+					<input type="button" value='批量导出'
+						onclick='exportMultiMail();return false;'
+						class="button-common"
+						onmouseover="this.className='button-common-1'"
+						onmouseout="this.className='button-common'" />
+				
+			
+			
+				<input type="button" value="全部已读" 	onclick="updateAllMailReadStatusToRead();return false;"
+					class="button-common"
+					onmouseover="this.className='button-common-1'"
+					onmouseout="this.className='button-common'" />
+			
+			&nbsp;
+			
+				<select class="kSelect" data-options="ktitle:'标记为...', optionWidth : 100 , selectType:'event', selectWidth :50">
+					
+						<option value="2" onclick="updateMailReadFlag(kSelectVal);">
+							已读
+						</option>
+					
+						<option value="1" onclick="updateMailReadFlag(kSelectVal);">
+							未读
+						</option>
+					
+				</select>
+				&nbsp;
+				<select class="kSelect" data-options="ktitle:'移到...',selectType:'event', selectWidth :50, optionWidth:100">
+					
+						
+					
+						
+					
+																	
+							<option value="20" onclick="moveMailToFolder(kSelectVal);">
+								已发送
+							</option>
+						
+					
+						
+					
+						
+					
+																	
+							<option value="13" onclick="moveMailToFolder(kSelectVal);">
+								归档邮件
+							</option>
+						
+					
+					
+				</select>
+			
+		</div>
+		<div class="barAreaRight navAreaRight">
+				
+
+
+    &nbsp;共&nbsp;<span  class="gridTotalCount" style="font-weight:bold;">26</span>&nbsp;
+    
+        <A href="javascript:void();return false;" onclick="paging(1);return false;">首页</A>
+        <A href="##" onclick="priorPage();return false">上页</A>
+        <A href="##" onclick="nextPage();return false;">下页</A>
+        <A class="pagingLastPage" href="javascript:void();return false;" onclick='paging(2);return false;'>末页</A>
+        
+        &nbsp;
+        <span title="跳转翻页">
+	        <select class="kSelect pagingPageSelect" selectType="basic" selectWidth="45" optionWidth="71">
+	            
+	                <option selected onclick='paging(1);'>
+	                    1/2
+	                </option>
+	            
+	                <option  onclick='paging(2);'>
+	                    2/2
+	                </option>
+	            
+	        </select>
+        </span>
+
+        &nbsp;
+        <span title="每页条数"><select class="kSelect" selectType="basic" selectWidth="25" optionWidth="51">
+            <option  value="50" onclick='changePerPageRows("50");return false;'>50</option>
+            <option  value="100" onclick='changePerPageRows("100");return false;'>100</option>
+            <option  value="200" onclick='changePerPageRows("200");return false;'>200</option>
+            <option  value="500" onclick='changePerPageRows("500");return false;'>500</option>
+            <option selected value="18" onclick='changePerPageRows(18);'>18</option>
+        </select></span>
+        
+    
+
+	
+		</div>
+</div>
+
+
+	</form>
+
+
+
+
+<!--json数据存储区  -->	
+	 
+	<input type="hidden" name="view.jsonData" value="[{&quot;to&quot;:&quot;格尔软件&amp;lt;koalsoftby1@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1140741,&quot;subject&quot;:&quot;关于表彰2016年度10月份明星员工的决定&quot;,&quot;fullSendDate&quot;:&quot;2016年11月28日  17：30：54&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;办公室&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;办公室&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:17917,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;【昨天】 17:30:54&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;办公室-&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:985140,&quot;fromAddress&quot;:&quot;bgs@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:true,&quot;selfInTo&quot;:false,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;格尔软件&amp;lt;koalsoftby1@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1134278,&quot;subject&quot;:&quot;贺喜&quot;,&quot;fullSendDate&quot;:&quot;2016年11月25日  14：38：49&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;办公室&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;办公室&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:1499,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月25日 14:38:49&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;办公室-&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:977969,&quot;fromAddress&quot;:&quot;bgs@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:false,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;格尔软件&amp;lt;koalsoftby1@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1130261,&quot;subject&quot;:&quot;关于年末个人借款清理和及时提交报销单据的通知&quot;,&quot;fullSendDate&quot;:&quot;2016年11月24日  09：02：46&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;办公室&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;办公室&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:38336,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月24日 09:02:46&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;办公室-&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:973413,&quot;fromAddress&quot;:&quot;bgs@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:true,&quot;selfInTo&quot;:false,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;韩剑&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1129205,&quot;subject&quot;:&quot;test&quot;,&quot;fullSendDate&quot;:&quot;2016年11月23日  18：27：17&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;韩剑&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:true,&quot;important&quot;:false,&quot;fromText&quot;:&quot;韩剑&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:5438,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月23日 18:27:17&quot;,&quot;encrypted&quot;:true,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;韩剑-&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:971809,&quot;fromAddress&quot;:&quot;hanjian@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;韩剑&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1129193,&quot;subject&quot;:&quot;test&quot;,&quot;fullSendDate&quot;:&quot;2016年11月23日  18：21：28&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;韩剑&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:true,&quot;important&quot;:false,&quot;fromText&quot;:&quot;韩剑&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:5396,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月23日 18:21:28&quot;,&quot;encrypted&quot;:true,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;韩剑-&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:971797,&quot;fromAddress&quot;:&quot;hanjian@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;韩剑&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1128581,&quot;subject&quot;:&quot;test&quot;,&quot;fullSendDate&quot;:&quot;2016年11月23日  13：57：24&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;韩剑&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:true,&quot;important&quot;:false,&quot;fromText&quot;:&quot;韩剑&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:5384,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月23日 13:57:24&quot;,&quot;encrypted&quot;:true,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;韩剑-&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:971092,&quot;fromAddress&quot;:&quot;hanjian@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;韩剑&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1126886,&quot;subject&quot;:&quot;test&quot;,&quot;fullSendDate&quot;:&quot;2016年11月22日  18：06：02&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;韩剑&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:true,&quot;important&quot;:false,&quot;fromText&quot;:&quot;韩剑&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:5330,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月22日 18:06:02&quot;,&quot;encrypted&quot;:true,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;韩剑-&amp;lt;hanjian@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:968595,&quot;fromAddress&quot;:&quot;hanjian@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;格尔软件&amp;lt;koalsoftby1@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1109298,&quot;subject&quot;:&quot;格尔软件成为中关村可信计算产业联盟副理事长单位&quot;,&quot;fullSendDate&quot;:&quot;2016年11月15日  13：40：36&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;办公室&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;办公室&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:334523,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月15日 13:40:36&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;办公室-&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:947590,&quot;fromAddress&quot;:&quot;bgs@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:true,&quot;selfInTo&quot;:false,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;格尔软件&amp;lt;koalsoftby1@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1102539,&quot;subject&quot;:&quot;卫生检查公告（11.11）&quot;,&quot;fullSendDate&quot;:&quot;2016年11月11日  16：15：18&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;办公室&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;办公室&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:3841,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月11日 16:15:18&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;办公室-&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:937230,&quot;fromAddress&quot;:&quot;bgs@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:false,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;格尔软件&amp;lt;koalsoftby1@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1093033,&quot;subject&quot;:&quot;格尔软件荣获2016年度上海市明星软件企业&quot;,&quot;fullSendDate&quot;:&quot;2016年11月07日  16：02：59&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;办公室&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;办公室&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:4281,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月07日 16:02:59&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;办公室-&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:922987,&quot;fromAddress&quot;:&quot;bgs@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:false,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;格尔软件&amp;lt;koalsoftby1@koal.com&amp;gt;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1087436,&quot;subject&quot;:&quot;卫生检查公告（11.4）&quot;,&quot;fullSendDate&quot;:&quot;2016年11月04日  16：15：32&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;办公室&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;办公室&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:3816,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月04日 16:15:32&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;办公室-&amp;lt;bgs@koal.com&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:916614,&quot;fromAddress&quot;:&quot;bgs@koal.com&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:false,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;hanjian@koal.com&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1083296,&quot;subject&quot;:&quot;Access to the 王智颖 / git-training-wangzhiying project was granted&quot;,&quot;fullSendDate&quot;:&quot;2016年11月03日  10：40：27&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;GitLab&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;GitLab&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:1191,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月03日 10:40:27&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;GitLab-&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:911442,&quot;fromAddress&quot;:&quot;git@koal.dev&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;hanjian@koal.com&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1083291,&quot;subject&quot;:&quot;Access to the 王智颖 / git-training-wangzhiying project was granted&quot;,&quot;fullSendDate&quot;:&quot;2016年11月03日  10：40：08&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;GitLab&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;GitLab&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:1183,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月03日 10:40:08&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;GitLab-&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:911437,&quot;fromAddress&quot;:&quot;git@koal.dev&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;hanjian@koal.com&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1081953,&quot;subject&quot;:&quot;SSH key was added to your account&quot;,&quot;fullSendDate&quot;:&quot;2016年11月02日  18：22：11&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;GitLab&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;GitLab&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:1442,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月02日 18:22:11&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;GitLab-&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:908852,&quot;fromAddress&quot;:&quot;git@koal.dev&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;hanjian@koal.com&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1081917,&quot;subject&quot;:&quot;SSH key was added to your account&quot;,&quot;fullSendDate&quot;:&quot;2016年11月02日  18：12：56&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;GitLab&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;GitLab&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:1481,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月02日 18:12:56&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;GitLab-&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:908813,&quot;fromAddress&quot;:&quot;git@koal.dev&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;hanjian@koal.com&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1081911,&quot;subject&quot;:&quot;SSH key was added to your account&quot;,&quot;fullSendDate&quot;:&quot;2016年11月02日  18：08：48&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;GitLab&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;GitLab&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:1481,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月02日 18:08:48&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;GitLab-&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:908800,&quot;fromAddress&quot;:&quot;git@koal.dev&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;hanjian@koal.com&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1081875,&quot;subject&quot;:&quot;SSH key was added to your account&quot;,&quot;fullSendDate&quot;:&quot;2016年11月02日  17：56：29&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;GitLab&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;GitLab&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:1477,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月02日 17:56:29&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;GitLab-&amp;lt;git@koal.dev&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:908758,&quot;fromAddress&quot;:&quot;git@koal.dev&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:true,&quot;starTarget&quot;:false},{&quot;to&quot;:&quot;&quot;,&quot;receiveDate&quot;:null,&quot;mailMailBoxId&quot;:1081065,&quot;subject&quot;:&quot;您的 格尔研发项目管理平台 密码&quot;,&quot;fullSendDate&quot;:&quot;2016年11月02日  14：50：03&quot;,&quot;readStatus&quot;:2,&quot;mailFolderName&quot;:&quot;收件箱&quot;,&quot;reply&quot;:false,&quot;fromName&quot;:&quot;&quot;,&quot;approverMail&quot;:false,&quot;fromDeptName&quot;:null,&quot;securityLevelNameHtml&quot;:&quot;&lt;b&gt;&lt;font color='#A3C1F2'&gt;【非密】&lt;\/font&gt;&lt;\/b&gt;&quot;,&quot;plainContent&quot;:null,&quot;signed&quot;:false,&quot;important&quot;:false,&quot;fromText&quot;:&quot;&amp;lt;redmine@koal.dev&amp;gt;&quot;,&quot;readableFlag&quot;:true,&quot;size&quot;:427,&quot;fromTextColor&quot;:&quot;&quot;,&quot;sendDate&quot;:&quot;11月02日 14:50:03&quot;,&quot;encrypted&quot;:false,&quot;exportableFlag&quot;:true,&quot;fromTitle&quot;:&quot;-&amp;lt;redmine@koal.dev&amp;gt;&quot;,&quot;mailFolderId&quot;:10,&quot;regularlySendMail&quot;:false,&quot;mailId&quot;:907855,&quot;fromAddress&quot;:&quot;redmine@koal.dev&quot;,&quot;transpond&quot;:false,&quot;existAttachment&quot;:false,&quot;selfInTo&quot;:false,&quot;starTarget&quot;:false}]" id="mailDataTableJson"/>
+    <input type="hidden" name="#application.PolicyCfg.supportSecurityLevel" value="false" id="supportSecurityLevel"/>
+</body>
+</html>
