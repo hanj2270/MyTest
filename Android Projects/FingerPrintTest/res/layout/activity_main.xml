@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="90dp"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/username" />
+    
+    <EditText
+        android:id="@+id/key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:hint="@string/key" />
+
+   <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content" >
+
+       <ImageView
+	        android:id="@+id/finger"
+	        android:src="@drawable/finger"
+	        android:contentDescription="@string/login"
+			android:paddingLeft="110dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:visibility="invisible"/>
+    
+    	<Button
+	    	android:id="@+id/login"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:layout_gravity="center_vertical" 
+	        android:text="@string/login"/>
+    	
+    	
+   </FrameLayout>
+    <LinearLayout
+        android:id="@+id/statusLayout"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="20dp"
+    	android:orientation="vertical"
+    	android:visibility="invisible">
+	   <TextView
+	       android:layout_width="match_parent"
+		   android:layout_height="wrap_content"
+		   android:text="@string/statusTitle"/>
+	    	
+		<EditText
+	        android:id="@+id/status"
+	        android:layout_marginTop="15dp"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:hint="@string/status" />
+	</LinearLayout>
+
+</LinearLayout>

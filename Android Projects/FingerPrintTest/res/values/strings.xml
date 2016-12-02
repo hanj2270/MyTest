@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FingerPrintTest</string>
+    <string name="username">请输入用户名</string>
+    <string name="key">请输入密码</string>
+    <string name="login">点击验证指纹</string>
+    <string name="status">请将认证过的手指放在指纹采集器上</string>
+    <string name="statusTitle">指纹验证状态:</string>
+
+</resources>
