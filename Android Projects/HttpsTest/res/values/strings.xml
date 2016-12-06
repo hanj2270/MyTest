@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HttpsTest</string>
+    <string name="hello_world">Kmail邮箱获取测试</string>
+    <string name="response">收件箱邮件列表</string>
+
+</resources>
