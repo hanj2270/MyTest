@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="lang">
+        <item>c实现</item>
+        <item>java实现</item>
+    </string-array>
+    
+    <string-array name="block">
+        <item>ecb模式</item>
+        <item>cbc模式</item>
+    </string-array>
+    
+    <string-array name="size">
+        <item>64bytes</item>
+        <item>256bytes</item>
+        <item>1024bytes</item>
+        <item>8192bytes</item>
+        <item>全部测试</item>
+    </string-array>
+    
+    
+</resources>

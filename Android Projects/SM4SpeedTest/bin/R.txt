@@ -4,6 +4,9 @@ int anim abc_slide_in_bottom 0x7f040002
 int anim abc_slide_in_top 0x7f040003
 int anim abc_slide_out_bottom 0x7f040004
 int anim abc_slide_out_top 0x7f040005
+int array block 0x7f0c0001
+int array lang 0x7f0c0000
+int array size 0x7f0c0002
 int attr actionBarDivider 0x7f01000f
 int attr actionBarItemBackground 0x7f010010
 int attr actionBarSize 0x7f01000e
@@ -247,6 +250,7 @@ int id action_mode_close_button 0x7f050024
 int id activity_chooser_view_content 0x7f050025
 int id always 0x7f05000b
 int id beginning 0x7f050011
+int id block_sp 0x7f05003e
 int id checkbox 0x7f05002d
 int id collapseActionView 0x7f05000d
 int id default_activity_button 0x7f050028
@@ -262,6 +266,7 @@ int id homeAsUp 0x7f050005
 int id icon 0x7f05002a
 int id ifRoom 0x7f05000a
 int id image 0x7f050027
+int id lang_sp 0x7f05003d
 int id listMode 0x7f050001
 int id list_item 0x7f050029
 int id middle 0x7f050012
@@ -285,7 +290,10 @@ int id shortcut 0x7f05002e
 int id showCustom 0x7f050007
 int id showHome 0x7f050004
 int id showTitle 0x7f050006
+int id size_sp 0x7f05003f
 int id split_action_bar 0x7f05001e
+int id squence_list 0x7f05003c
+int id start 0x7f050040
 int id submit_area 0x7f050039
 int id tabMode 0x7f050002
 int id title 0x7f05002b
@@ -334,7 +342,12 @@ int string abc_searchview_description_voice 0x7f0a0008
 int string abc_shareactionprovider_share_with 0x7f0a000c
 int string abc_shareactionprovider_share_with_application 0x7f0a000b
 int string app_name 0x7f0a000d
+int string block 0x7f0a0010
 int string hello_world 0x7f0a000e
+int string lang 0x7f0a000f
+int string notice 0x7f0a0013
+int string size 0x7f0a0011
+int string start 0x7f0a0012
 int style AppBaseTheme 0x7f0b008b
 int style AppTheme 0x7f0b008c
 int style TextAppearance_AppCompat_Base_CompactMenu_Dialog 0x7f0b0063
@@ -476,6 +489,9 @@ int style Widget_AppCompat_PopupMenu 0x7f0b002b
 int style Widget_AppCompat_ProgressBar 0x7f0b000a
 int style Widget_AppCompat_ProgressBar_Horizontal 0x7f0b0009
 int style Widget_AppCompat_Spinner_DropDown_ActionBar 0x7f0b0022
+int style baseSize 0x7f0b008d
+int style baseText 0x7f0b008e
+int style weightSize 0x7f0b008f
 int[] styleable ActionBar { 0x7f010025, 0x7f010026, 0x7f010027, 0x7f010028, 0x7f010029, 0x7f01002a, 0x7f01002b, 0x7f01002c, 0x7f01002d, 0x7f01002e, 0x7f01002f, 0x7f010030, 0x7f010031, 0x7f010032, 0x7f010033, 0x7f010034, 0x7f010035, 0x7f010036, 0x7f010037 }
 int styleable ActionBar_background 10
 int styleable ActionBar_backgroundSplit 12

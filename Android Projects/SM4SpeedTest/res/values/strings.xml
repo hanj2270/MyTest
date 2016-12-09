@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SM4ByCTest</string>
+    <string name="app_name">SM4速度测试</string>
     <string name="hello_world">Hello world!</string>
+    
+    <string name="lang">选择实现方式:</string>
+    <string name="block">选择分组模式:</string>
+    <string name="size">选择数据大小:</string>
+    
+    <string name="start">开始测试</string>
+    
+    <string name="notice">说明:测试实现方法为通过测试3秒内加密算法能够加密的次数,并根据加密次数计算出加密速度.</string>
+    
 
 </resources>

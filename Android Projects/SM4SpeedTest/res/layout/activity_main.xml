@@ -1,12 +1,69 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
+ 
+	<LinearLayout
+	        style="@style/weightSize"
+	        android:layout_weight="7" 
+	        android:orientation="horizontal">
+	    <ListView
+	        android:id="@+id/squence_list"
+	   		style="@style/baseSize"/>
+    </LinearLayout>
+    
+	<LinearLayout
+	        style="@style/weightSize"
+	        android:layout_weight="1" 
+	        android:orientation="horizontal">
+	        <TextView
+	        style="@style/baseText"
+	        android:text="@string/lang"/>
+	        <Spinner
+	        android:id="@+id/lang_sp"
+	        style="@style/baseSize"
+	        android:entries="@array/lang"/>
+	</LinearLayout>
+	
+	<LinearLayout
+	        style="@style/weightSize"
+	        android:orientation="horizontal"
+	        android:layout_weight="1" >
+	        <TextView
+	        style="@style/baseText"
+	        android:text="@string/block"/>
+	        <Spinner
+	        android:id="@+id/block_sp"
+	        style="@style/baseSize"
+	        android:entries="@array/block"/>
+	</LinearLayout>
+	
+	<LinearLayout
+	        style="@style/weightSize"
+	        android:orientation="horizontal"
+	        android:layout_weight="1" >
+	        <TextView
+	        style="@style/baseText"
+	        android:text="@string/size"/>
+	        <Spinner
+	        android:id="@+id/size_sp"
+	        style="@style/baseSize"
+	         android:entries="@array/size"/>
+	</LinearLayout>
+	
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+	 <Button
+	        android:id="@+id/start"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+	        android:text="@string/start"/>
 
-</RelativeLayout>
+	
+	<TextView
+   		style="@style/baseText"
+        android:layout_weight="1"
+        android:text="@string/notice"/>
+	
+</LinearLayout>
