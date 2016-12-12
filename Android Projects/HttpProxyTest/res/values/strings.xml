@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Http正向代理Test</string>
+    <string name="hello_world">Hello world!</string>
+    
+    
+    <string name="url">请输入url</string>
+    <string name="proxy">正向代理服务器地址</string>
+    <string name="proxyFrom">http请求来自于:</string>
+    <string name="gotoBt">跳转</string>
+</resources>

@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <EditText
+        android:id="@+id/browser"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="8"/>
+    
+    <LinearLayout 
+	    android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+	    android:orientation="horizontal">
+	    
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/proxyFrom" 
+        android:layout_gravity="bottom"/>
+	    
+        <EditText
+        android:id="@+id/proxy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/proxy" 
+        android:layout_gravity="bottom"/>
+        
+    </LinearLayout>
+    
+   <LinearLayout 
+	    android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+	    android:orientation="horizontal">
+
+	    
+        <EditText
+	        android:id="@+id/url"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	       	android:layout_weight="6"
+	        android:text="@string/url" 
+	        android:layout_gravity="bottom"/>
+        
+        <Button
+            android:id="@+id/gotoBt"
+            android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	       	android:layout_weight="2"
+        	android:text="@string/gotoBt" 
+        	android:layout_gravity="bottom"/>
+        
+    </LinearLayout>
+    
+    
+
+
+</LinearLayout>
